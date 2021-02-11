@@ -5,7 +5,7 @@ namespace :csv do
     require 'csv'
 
     YEAR = 2019
-    SEX = 'm'
+    SEX = 'f'
     COUNTRY = 'U.S.A.'
     CSV_FILE_NAME = "yob#{YEAR}#{SEX}.txt"
 
