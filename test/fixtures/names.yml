@@ -3,9 +3,39 @@
 # This model initially had no columns defined. If you add columns to the
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+
+olivia:
+  id: 1
+  name: Olivia
+  sex: F
+  count: 18451
+  popularity: 1
+  year: 2019
+  country: U.S.A.
+
+ariadne:
+  id: 999
+  name: Ariadne
+  sex: F
+  count: 256
+  popularity: 999
+  year: 2019
+  country: U.S.A.
+
+liam:
+  id: 1001,
+  name: Liam
+  sex: M
+  count: 20502
+  popularity: 1
+  year: 2019
+  country: U.S.A.
+
+jermaine:
+  id: 1994
+  name: Jermaine
+  sex: M
+  count: 210
+  popularity: 994
+  year: 2019
+  country: U.S.A.
