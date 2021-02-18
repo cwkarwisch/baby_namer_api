@@ -56,5 +56,6 @@ namespace :csv do
   task download_and_import_names: [:environment] do
     Rake::Task["csv:download_names"].execute
     Rake::Task["csv:import_names"].execute
+    system("rm -r #{Rails.root.join("lib/baby_names")}")
   end
 end
