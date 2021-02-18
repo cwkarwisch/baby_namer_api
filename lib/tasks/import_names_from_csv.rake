@@ -4,28 +4,57 @@ namespace :csv do
   task import_names: [:environment] do
     require 'csv'
 
-    YEAR = 2019
-    SEX = 'f'
     COUNTRY = 'U.S.A.'
-    CSV_FILE_NAME = "yob#{YEAR}#{SEX}.txt"
+    INDICES = {
+      name: 0,
+      sex: 1,
+      count: 2
+    }
+    NAME_CAP = 1000
 
-    popularity = 1;
+    years = 1880..2019
 
-    CSV.foreach(Rails.root.join("lib/#{CSV_FILE_NAME}")) do |row|
+    years.each do |year|
+      csv_file_name = "yob#{year}.txt"
+      popularity = 0
+      sex_of_previous_row = 'F'
 
-      Name.create({
-        name: row[0],
-        sex: row[1],
-        count: row[2].to_i,
-        popularity: popularity,
-        year: YEAR,
-        country: COUNTRY
-      })
+      CSV.foreach(Rails.root.join("lib/baby_names/#{csv_file_name}")) do |row|
 
-      popularity += 1;
-      break if popularity > 1000;
+        if row[INDICES[:sex]] != sex_of_previous_row
+          popularity = 1
+        else
+          popularity += 1;
+        end
+
+        if popularity <= NAME_CAP
+          Name.create({
+            name: row[INDICES[:name]],
+            sex: row[INDICES[:sex]],
+            count: row[INDICES[:count]].to_i,
+            popularity: popularity,
+            year: year,
+            country: COUNTRY
+          })
+        end
+
+        sex_of_previous_row = row[INDICES[:sex]]
+
+        break if popularity > NAME_CAP && row[INDICES[:sex]] == 'M';
+      end
     end
   end
 
+  desc "download and extract names data"
+  task download_names: [:environment] do
+    system("curl https://www.ssa.gov/oact/babynames/names.zip -o #{Rails.root.join("lib/baby_names.zip")}")
+    system("unzip #{Rails.root.join("lib/baby_names.zip")} -d #{Rails.root.join("lib/baby_names")}")
+    system("rm #{Rails.root.join("lib/baby_names.zip")}")
+  end
 
+  desc "download and import name data"
+  task download_and_import_names: [:environment] do
+    Rake::Task["csv:download_names"].execute
+    Rake::Task["csv:import_names"].execute
+  end
 end
