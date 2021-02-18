@@ -20,5 +20,6 @@ class NamesController < ApplicationController
     names = names.where(sex: params[:sex]) if params[:sex]
     names = names.where(year: params[:year].to_i) if params[:year]
     names = names.where("popularity <= ?", params[:popularity]) if params[:popularity]
+    names
   end
 end
