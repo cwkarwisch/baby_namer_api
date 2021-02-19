@@ -19,6 +19,8 @@ namespace :csv do
       popularity = 0
       sex_of_previous_row = 'F'
 
+      names = []
+
       CSV.foreach(Rails.root.join("lib/baby_names/#{csv_file_name}")) do |row|
 
         if row[INDICES[:sex]] != sex_of_previous_row
@@ -28,20 +30,26 @@ namespace :csv do
         end
 
         if popularity <= NAME_CAP
-          Name.create({
+          name_hash = {
             name: row[INDICES[:name]],
             sex: row[INDICES[:sex]],
             count: row[INDICES[:count]].to_i,
             popularity: popularity,
             year: year,
-            country: COUNTRY
-          })
+            country: COUNTRY,
+            created_at: Time.now,
+            updated_at: Time.now
+          }
+          names << name_hash
         end
 
         sex_of_previous_row = row[INDICES[:sex]]
 
         break if popularity > NAME_CAP && row[INDICES[:sex]] == 'M';
       end
+
+      Name.insert_all(names)
+
     end
   end
 
