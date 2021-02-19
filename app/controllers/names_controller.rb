@@ -16,10 +16,14 @@ class NamesController < ApplicationController
   end
 
   def filter_names
-    names = Name.all
-    names = names.where(sex: params[:sex]) if params[:sex]
-    names = names.where(year: params[:year].to_i) if params[:year]
-    names = names.where("popularity <= ?", params[:popularity]) if params[:popularity]
-    names
+    Name.where(filter_parameters)
+  end
+
+  def filter_parameters
+    requested_parameters = {}
+    requested_parameters[:sex] = params[:sex] if params[:sex]
+    requested_parameters[:year] = params[:year].to_i if params[:year]
+    requested_parameters[:popularity] = (1..params[:popularity].to_i) if params[:popularity]
+    requested_parameters
   end
 end
