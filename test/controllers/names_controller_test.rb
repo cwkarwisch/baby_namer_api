@@ -45,4 +45,43 @@ class NamesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Olivia"
     refute_includes response.body, "Ariadne"
   end
+
+  test "get year range for individual name" do
+    get names_url, params: {name: "Olivia", yearStart: "2018", yearEnd: "2019"}
+    assert_response :success
+    assert_includes response.body, "2019"
+    assert_includes response.body, "2018"
+    refute_includes response.body, "2017"
+    assert_includes response.body, "Olivia"
+    refute_includes response.body, "Ariadne"
+  end
+
+  test "get historical data for individual name" do
+    get names_url, params: {name: "Olivia", sex: "F"}
+    assert_response :success
+    assert_includes response.body, "2019"
+    assert_includes response.body, "2018"
+    assert_includes response.body, "Olivia"
+    refute_includes response.body, "Jermaine"
+  end
+
+  test "get year range when only yearStart provided" do
+    get names_url, params: {name: "Olivia", sex: "F", yearStart: "2018"}
+    assert_response :success
+    refute_includes response.body, "2019"
+    assert_includes response.body, "2018"
+    refute_includes response.body, "2017"
+    assert_includes response.body, "Olivia"
+    refute_includes response.body, "Jermaine"
+  end
+
+  test "get year range when only yearEnd provided" do
+    get names_url, params: {name: "Olivia", sex: "F", yearEnd: "2017"}
+    assert_response :success
+    assert_includes response.body, "2017"
+    refute_includes response.body, "2018"
+    refute_includes response.body, "2019"
+    assert_includes response.body, "Olivia"
+    refute_includes response.body, "Jermaine"
+  end
 end

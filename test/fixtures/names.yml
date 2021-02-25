@@ -39,3 +39,21 @@ jermaine:
   popularity: 994
   year: 2019
   country: U.S.A.
+
+olivia_2018:
+  id: 2
+  name: Olivia
+  sex: F
+  count: 18451
+  popularity: 1
+  year: 2018
+  country: U.S.A.
+
+olivia_2017:
+  id: 3
+  name: Olivia
+  sex: F
+  count: 18451
+  popularity: 1
+  year: 2017
+  country: U.S.A.
