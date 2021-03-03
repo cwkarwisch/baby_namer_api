@@ -1,15 +1,12 @@
 class NamesController < ApplicationController
   def index
-    if query_parameters?
-      @names = filter_names
-      render json: @names
-    else
-      @names = Name.all
-      render json: @names
-    end
+    @names = filter_names
+    render json: @names
   end
 
   private
+
+  NAME_LIMIT = 1000
 
   def query_parameters?
     params[:sex] || params[:popularity] || params[:year] ||
@@ -17,7 +14,7 @@ class NamesController < ApplicationController
   end
 
   def filter_names
-    Name.where(filter_parameters)
+    Name.where(filter_parameters).limit(NAME_LIMIT)
   end
 
   def filter_parameters
