@@ -84,4 +84,10 @@ class NamesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Olivia"
     refute_includes response.body, "Jermaine"
   end
+
+  test "request should not return more than 1,000 names" do
+    get names_url
+    assert_response :success
+    assert JSON.parse(response.body).size <= 1000
+  end
 end
