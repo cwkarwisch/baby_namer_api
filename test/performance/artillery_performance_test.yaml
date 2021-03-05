@@ -1,0 +1,17 @@
+# will hit the specified endpoints with 1 request every second for 10 seconds
+
+config:
+  target: "https://baby-namer-api.herokuapp.com"
+  phases:
+    - duration: 10
+      arrivalRate: 1
+scenarios:
+  - flow:
+      - get:
+          url: "/names?year=1960"
+      - get:
+          url: "/names?year=2015"
+      - get:
+          url: "/names?name=Clay&Sex=M"
+      - get:
+          url: "/names?name=Camille&yearStart=1950&yearEnd=1999"
