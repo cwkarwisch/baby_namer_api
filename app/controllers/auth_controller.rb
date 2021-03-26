@@ -5,7 +5,7 @@ class AuthController < ApplicationController
       token = JWT.encode({ user_id: user.id }, Rails.application.secret_key_base, 'HS256')
       render json: { user: user, token: token }
     else
-      render json: {}, status: 401
+      render json: {}, status: :unauthorized
     end
   end
 
@@ -18,10 +18,10 @@ class AuthController < ApplicationController
         user = User.find(user_id)
         render json: user
       rescue
-        render json: {}, status: 401
+        render json: {}, status: :unauthorized
       end
     else
-      render json: {}, status: 401
+      render json: {}, status: :unauthorized
     end
   end
 

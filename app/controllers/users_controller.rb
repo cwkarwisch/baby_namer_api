@@ -7,7 +7,6 @@ class UsersController < ApplicationController
   def create
     user = User.create(user_params)
     if user.valid?
-      user = user
       token = JWT.encode({ user_id: user.id }, Rails.application.secret_key_base, 'HS256')
       render json: { user: user, token: token }
     else
@@ -29,6 +28,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:username, :password)
+    params.permit(:username, :password, :email)
   end
 end

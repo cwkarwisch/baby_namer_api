@@ -15,7 +15,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create new user" do
     username = "TestUser3"
-    post '/users', params: { username: username, password: "secretpw"}
+    email = "testuser3@example.com"
+    post '/users', params: { username: username, password: "secretpw", email: email }
     assert_response :success
     body = JSON.parse(response.body)
     assert_equal username, body["user"]["username"]
@@ -40,7 +41,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should delete user" do
-    user_id = @user.id
     assert_difference("User.count", -1) do
       delete user_path(@user)
     end
